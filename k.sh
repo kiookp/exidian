@@ -48,16 +48,16 @@ run_program() {
 
 # 菜单
 echo "菜单："
-echo "1. 配置账号信息"
-echo "2. 安装环境"
+echo "1. 安装环境"
+echo "2. 配置账号信息"
 echo "3. 运行程序"
 
 read -p "请输入您的选择（1-3）: " choice
 echo
 
 case $choice in
-    1) configure_account;;
-    2) install_environment;;
+    1) install_environment;;
+    2) configure_account;;
     3) run_program;;
     *) echo "无效的选择。退出。";;
 esac

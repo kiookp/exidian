@@ -12,7 +12,6 @@ NORMAL=$(tput sgr0)
 # 检查必要的命令是否存在
 REQUIRED_CMDS=("wget" "apt-get" "pip")
 
-
 for cmd in "${REQUIRED_CMDS[@]}"; do
     if ! command -v $cmd &> /dev/null; then
         echo -e "${RED}错误：$cmd 命令不存在。请安装它后再运行这个脚本。${NC}"
@@ -80,7 +79,22 @@ install_environment() {
     esac
 }
 
+# 下载 Git 仓库
+download_git_repository() {
+    echo -e "${YELLOW}${BOLD}下载 Git 仓库${NORMAL}${NC}"
+    git clone https://github.com/kiookp/exidian.git
+    echo -e "${GREEN}Git 仓库下载完成。${NC}\n"
 
+    # 进入仓库目录
+    enter_git_repository
+}
+
+# 进入 Git 仓库目录
+enter_git_repository() {
+    echo -e "${YELLOW}${BOLD}进入 Git 仓库目录${NORMAL}${NC}"
+    cd exidian
+    echo -e "${GREEN}已进入 Git 仓库目录。${NC}\n"
+}
 
 # 配置账号信息
 configure_account() {
@@ -101,20 +115,45 @@ configure_account() {
     echo -e "${GREEN}账号配置完成。${NC}\n"
 }
 
-
-
-
 # 运行程序
 run_program() {
     echo -e "${YELLOW}${BOLD}运行程序${NORMAL}${NC}"
-    # 下载 git 仓库
-    git clone https://github.com/kiookp/exidian.git
-    cd exidian
 
-    # 创建新的 screen 窗口并运行程序
-    screen -dmS exidian python3 app.py
+    # 检查 screen 是否已运行
+    if screen -list | grep -q "exidian"; then
+        echo -e "${RED}错误：程序已在运行中。请先结束程序。${NC}"
+        return
+    fi
+
+    # 创建新的 screen 窗口
+    screen -dmS exidian
+
+    # 切换到新窗口
+    screen -S exidian -p 0 -X stuff $'screen\n'
+
+    # 等待切换完成
+    sleep 1
+
+    # 在新窗口中运行程序
+    screen -S exidian -p 1 -X stuff $'python3 app.py\n'
 
     echo -e "${GREEN}程序已启动。您可以查看 screen 会话以查看日志。${NC}\n"
+
+    # 二级选择菜单
+    while true; do
+        echo -e "${YELLOW}${BOLD}程序状态菜单：${NORMAL}${NC}"
+        echo -e "1. ${CYAN}进入 screen 窗口${NC}"
+        echo -e "2. ${CYAN}返回主菜单${NC}"
+
+        read -p "请输入您的选择（1-2）: " subchoice
+        echo
+
+        case $subchoice in
+            1) screen -r exidian;;
+            2) break;;
+            *) echo -e "${RED}无效的选择。${NC}";;
+        esac
+    done
 }
 
 # 结束程序
@@ -126,25 +165,58 @@ stop_program() {
     echo -e "${GREEN}程序已结束。${NC}\n"
 }
 
+# 监控程序状态
+check_program_status() {
+    echo -e "${YELLOW}${BOLD}检查程序状态${NORMAL}${NC}"
+    # 检查 screen 是否已运行
+    if screen -list | grep -q "exidian"; then
+        echo -e "${GREEN}程序正在运行。${NC}"
+        echo
+
+        # 二级选择菜单
+        while true; do
+            echo -e "${YELLOW}${BOLD}程序状态菜单：${NORMAL}${NC}"
+            echo -e "1. ${CYAN}进入 screen 窗口${NC}"
+            echo -e "2. ${CYAN}返回主菜单${NC}"
+
+            read -p "请输入您的选择（1-2）: " subchoice
+            echo
+
+            case $subchoice in
+                1) screen -r exidian;;
+                2) break;;
+                *) echo -e "${RED}无效的选择。${NC}";;
+            esac
+        done
+    else
+        echo -e "${RED}程序未运行。${NC}"
+        echo
+    fi
+}
+
 
 # 菜单
 while true; do
     echo -e "${YELLOW}${BOLD}菜单：${NORMAL}${NC}"
     echo -e "1. ${CYAN}安装环境${NC}"
-    echo -e "2. ${CYAN}配置账号信息${NC}"
-    echo -e "3. ${CYAN}运行程序${NC}"
-    echo -e "4. ${CYAN}结束程序${NC}"
-    echo -e "5. ${CYAN}退出${NC}"
+    echo -e "2. ${CYAN}下载 Git 仓库${NC}"
+    echo -e "3. ${CYAN}配置账号信息${NC}"
+    echo -e "4. ${CYAN}运行程序${NC}"
+    echo -e "5. ${CYAN}结束程序${NC}"
+    echo -e "6. ${CYAN}检查程序状态${NC}"
+    echo -e "7. ${CYAN}退出${NC}"
 
-    read -p "请输入您的选择（1-5）: " choice
+    read -p "请输入您的选择（1-7）: " choice
     echo
 
     case $choice in
         1) install_environment;;
-        2) configure_account;;
-        3) run_program;;
-        4) stop_program;;
-        5) echo -e "${GREEN}退出。${NC}"; exit 0;;
+        2) download_git_repository;;
+        3) configure_account;;
+        4) run_program;;
+        5) stop_program;;
+        6) check_program_status;;
+        7) echo -e "${GREEN}退出。${NC}"; exit 0;;
         *) echo -e "${RED}无效的选择。${NC}";;
     esac
 done

@@ -9,4 +9,4 @@ apt-get install -y google-chrome-stable
 
 apt-get install -yqq unzip
 wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+unzip /tmp/chromedriver.zip chromedriver -d /usr/bin/chromedriver

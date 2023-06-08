@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 import time
 import os
 from selenium.webdriver.support.ui import WebDriverWait

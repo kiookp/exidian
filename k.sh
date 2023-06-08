@@ -12,8 +12,6 @@ NORMAL=$(tput sgr0)
 # 检查必要的命令是否存在
 REQUIRED_CMDS=("wget" "apt-get" "pip")
 
-# 检查必要的命令是否存在
-REQUIRED_CMDS=("wget" "pip")
 
 for cmd in "${REQUIRED_CMDS[@]}"; do
     if ! command -v $cmd &> /dev/null; then
@@ -97,8 +95,12 @@ configure_account() {
     # 将配置写入文件
     echo -e "[Credentials]\ntelegram_bot_token = $telegram_bot_token\ntelegram_chat_id = $telegram_chat_id\nwebsite = $website\nusername = $username\npassword = $password" > config.ini
 
+    # 移动配置文件到 exidian 目录
+    mv config.ini exidian/config.ini
+
     echo -e "${GREEN}账号配置完成。${NC}\n"
 }
+
 
 
 

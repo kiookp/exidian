@@ -93,10 +93,6 @@ try:
             wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#mltree_3_span"))).click()
             time.sleep(60)
 
-            wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#mltree_4_span")))
-            driver.refresh()
-            time.sleep(10)
-
         except Exception as e:
             print("出现异常：", str(e))
             print("正在刷新页面...")

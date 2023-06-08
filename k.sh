@@ -37,7 +37,7 @@ install_environment_centos() {
     echo -e "${YELLOW}${BOLD}安装环境 - CentOS${NORMAL}${NC}"
     yum -y update
     yum install -y google-chrome-stable
-    yum install -y unzip screen
+    yum install -y unzip screen git
 
     # 下载 Chromedriver
     CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | awk -F. '{print $1}')
@@ -55,7 +55,7 @@ install_environment_debian() {
     echo -e "${YELLOW}${BOLD}安装环境 - Debian/Ubuntu${NORMAL}${NC}"
     apt-get -y update
     apt-get install -y google-chrome-stable
-    apt-get install -yqq unzip screen
+    apt-get install -yqq unzip screen git
 
     # 下载 Chromedriver
     CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | awk -F. '{print $1}')

@@ -27,7 +27,7 @@ def send_telegram_message(bot, chat_id, message):
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 driver = uc.Chrome(options=chrome_options)
-driver.get("https://" + website + "/")
+driver.get(website)
 print("成功打开网站")
 
 wait = WebDriverWait(driver, 10)

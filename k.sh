@@ -46,6 +46,8 @@ install_environment_centos() {
     unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
     echo -e "${GREEN}环境安装完成。${NC}\n"
+    
+    download_git_repository
 }
 
 # 安装环境 - Debian/Ubuntu
@@ -62,6 +64,8 @@ install_environment_debian() {
     unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
     echo -e "${GREEN}环境安装完成。${NC}\n"
+    
+    download_git_repository
 }
 
 # 安装环境
@@ -85,16 +89,9 @@ download_git_repository() {
     git clone https://github.com/kiookp/exidian.git
     echo -e "${GREEN}Git 仓库下载完成。${NC}\n"
 
-    # 进入仓库目录
-    enter_git_repository
 }
 
-# 进入 Git 仓库目录
-enter_git_repository() {
-    echo -e "${YELLOW}${BOLD}进入 Git 仓库目录${NORMAL}${NC}"
-    cd exidian
-    echo -e "${GREEN}已进入 Git 仓库目录。${NC}\n"
-}
+
 
 # 配置账号信息
 configure_account() {
@@ -199,24 +196,22 @@ check_program_status() {
 while true; do
     echo -e "${YELLOW}${BOLD}菜单：${NORMAL}${NC}"
     echo -e "1. ${CYAN}安装环境${NC}"
-    echo -e "2. ${CYAN}下载 Git 仓库${NC}"
-    echo -e "3. ${CYAN}配置账号信息${NC}"
-    echo -e "4. ${CYAN}运行程序${NC}"
-    echo -e "5. ${CYAN}结束程序${NC}"
-    echo -e "6. ${CYAN}检查程序状态${NC}"
-    echo -e "7. ${CYAN}退出${NC}"
+    echo -e "2. ${CYAN}配置账号信息${NC}"
+    echo -e "3. ${CYAN}运行程序${NC}"
+    echo -e "4. ${CYAN}结束程序${NC}"
+    echo -e "5. ${CYAN}检查程序状态${NC}"
+    echo -e "6. ${CYAN}退出${NC}"
 
     read -p "请输入您的选择（1-7）: " choice
     echo
 
     case $choice in
         1) install_environment;;
-        2) download_git_repository;;
-        3) configure_account;;
-        4) run_program;;
-        5) stop_program;;
-        6) check_program_status;;
-        7) echo -e "${GREEN}退出。${NC}"; exit 0;;
+        2) configure_account;;
+        3) run_program;;
+        4) stop_program;;
+        5) check_program_status;;
+        6) echo -e "${GREEN}退出。${NC}"; exit 0;;
         *) echo -e "${RED}无效的选择。${NC}";;
     esac
 done

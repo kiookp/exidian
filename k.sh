@@ -19,6 +19,16 @@ for cmd in "${REQUIRED_CMDS[@]}"; do
     fi
 done
 
+# 检查 Python 版本
+check_python_version() {
+    PYTHON_VERSION=$(python3 -c "import sys; print('.'.join(map(str, sys.version_info[:3])))")
+
+    if [[ $PYTHON_VERSION != "3.9"* ]]; then
+        echo -e "${RED}错误：Python 3.9 未安装或未设置为默认 Python 版本。请先安装 Python 3.9 并设置为默认版本后再运行这个脚本。${NC}"
+        exit 1
+    fi
+}
+
 # 检查系统类型
 detect_system() {
     if [ -f /etc/os-release ]; then
@@ -88,10 +98,7 @@ download_git_repository() {
     echo -e "${YELLOW}${BOLD}下载 Git 仓库${NORMAL}${NC}"
     git clone https://github.com/kiookp/exidian.git
     echo -e "${GREEN}Git 仓库下载完成。${NC}\n"
-
 }
-
-
 
 # 配置账号信息
 configure_account() {
@@ -125,7 +132,8 @@ run_program() {
     # 创建新的 screen 窗口
     screen -dmS exidian
 
-    # 切换到新窗口
+    # 切换到新窗口并进入 exidian 目录
+    screen -S exidian -p 0 -X stuff $'cd exidian\n'
     screen -S exidian -p 0 -X stuff $'screen\n'
 
     # 等待切换完成
@@ -191,7 +199,6 @@ check_program_status() {
     fi
 }
 
-
 # 菜单
 while true; do
     echo -e "${YELLOW}${BOLD}菜单：${NORMAL}${NC}"
@@ -206,7 +213,7 @@ while true; do
     echo
 
     case $choice in
-        1) install_environment;;
+        1) check_python_version && install_environment;;
         2) configure_account;;
         3) run_program;;
         4) stop_program;;

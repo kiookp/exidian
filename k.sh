@@ -12,18 +12,6 @@ NORMAL=$(tput sgr0)
 # 检查必要的命令是否存在
 REQUIRED_CMDS=("wget" "apt-get" "pip")
 
-
-#!/bin/bash --posix
-
-# 定义一些颜色和格式化选项
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
-
 # 检查必要的命令是否存在
 REQUIRED_CMDS=("wget" "pip")
 

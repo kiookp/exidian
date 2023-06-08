@@ -9,3 +9,7 @@
 ````
 bash -c "$(wget -O- https://raw.githubusercontent.com/kiookp/exidian/main/k.sh)"
 ````
+
+````
+bash -c "$(wget -O- https://raw.githubusercontent.com/kiookp/exidian/main/g.sh)"
+````

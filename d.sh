@@ -2,16 +2,16 @@
 
 # 显示菜单
 display_menu() {
-  echo "1. 启动容器并运行 /data/app.py 脚本"
+  echo "1. 启动容器并进入 /data 目录执行 app.py 脚本"
   echo "2. 进入容器"
   echo "3. 查看容器运行状态"
   echo "4. 退出"
 }
 
-# 启动容器并运行 /data/app.py 脚本
+# 启动容器并进入 /data 目录执行 app.py 脚本
 start_container_and_run_script() {
-  docker run -d -it -v /root/exidian:/data ipd805/kkedu:v1.0 python3 /data/app.py
-  echo "容器已启动并运行 /data/app.py 脚本。"
+  container_id=$(docker run -d -it -v /root/exidian:/data ipd805/kkedu:v1.0 bash)
+  docker exec -it "$container_id" bash -c "cd /data && python3 app.py"
 }
 
 # 进入容器
